@@ -55,4 +55,10 @@ public struct Log: Codable {
     enum CodingKeys: String, CodingKey {
             case properties, instructorLog = "instructor_log", pilot_logs
     }
+    
+    public init(properties:Properties, instructorLog: InstructorLog, pilotLogs:[PilotLog]) {
+        self.properties = properties
+        self.instructorLog = instructorLog
+        self.pilot_logs = pilotLogs
+    }
 }
