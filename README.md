@@ -1,3 +1,3 @@
 # simlog-core
 
-A description of this package.
+Data model for logs
