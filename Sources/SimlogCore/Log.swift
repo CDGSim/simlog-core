@@ -52,7 +52,7 @@ public struct Log: Codable {
                 case setupInfo = "setup_info", events
         }
         
-        internal init(setupInfo: String? = nil, events: [Log.Event]? = nil) {
+        public init(setupInfo: String? = nil, events: [Log.Event]? = nil) {
             self.setupInfo = setupInfo
             self.events = events
         }
