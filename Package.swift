@@ -3,20 +3,19 @@
 import PackageDescription
 
 let package = Package(
-    name: "SimlogCore",
+    name: "simlog-core",
     products: [
-        .library(
-            name: "simlog-core",
-            targets: ["simlog-core"]),
+        .library(name: "SimlogCore",
+                 targets: ["SimlogCore"]),
     ],
     dependencies: [
     ],
     targets: [
         .target(
-            name: "simlog-core",
+            name: "SimlogCore",
             dependencies: []),
         .testTarget(
-            name: "simlog-coreTests",
-            dependencies: ["simlog-core"]),
+            name: "SimlogCoreTests",
+            dependencies: ["SimlogCore"]),
     ]
 )
