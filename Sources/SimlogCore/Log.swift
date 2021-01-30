@@ -4,6 +4,7 @@ public struct Log: Codable {
     
     public struct Properties: Codable {
         public enum ControlPosition: String, Codable {
+            case seq = "SEQ"
             case iniN = "INI N"
             case iniS = "INI S"
             case coorIniN = "COOR INI N"
