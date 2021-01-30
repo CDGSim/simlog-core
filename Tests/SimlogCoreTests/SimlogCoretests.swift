@@ -8,17 +8,20 @@ final class SimlogCoretests: XCTestCase {
     "traffic_density" : "Fort",
     "start_date" : "2021-01-30T12:06:10Z",
     "objectives" : "Objectifs de la simulation",
-    "controlPositionGroups" : [
-      [
-        "inin",
-        "inis"
+      "assignments" : [
+        {
+          "controller" : "PC",
+          "positions" : [
+            "INI N"
+          ]
+        },
+        {
+          "controller" : "ST",
+          "positions" : [
+            "INI S"
+          ]
+        }
       ],
-      [
-        "itmn",
-        "itms",
-        "itmba"
-      ]
-    ],
     "configuration" : "WL",
     "duration" : 60,
     "update_date" : "2021-01-30T12:08:10Z",
@@ -41,7 +44,7 @@ final class SimlogCoretests: XCTestCase {
         XCTAssert(properties.description == "Description")
         XCTAssert(properties.pressure == 1013)
         XCTAssert(properties.weather == "CAVOK")
-        XCTAssert(properties.controlPositionGroups == [[.inin, .inis], [.itms, .itmn, .itmba]])
+        XCTAssert(properties.assignments == [.init(positions: [.iniN], controller: .certified), .init(positions: [.iniS], controller: .trainee)])
         
         // Test dates
         let dateFormatter = ISO8601DateFormatter()

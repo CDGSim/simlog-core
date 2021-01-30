@@ -4,11 +4,37 @@ public struct Log: Codable {
     
     public struct Properties: Codable {
         public enum ControlPosition: String, Codable {
-            case inin, inis, itmn, itms, itmba, coorinin, coorinis
-            case depn, deps, coordepn, coordeps
-            case locn, locs, coorlocn, coorlocs
-            case solse, solsw, solne, solnw
-            case prevol
+            case iniN = "INI N"
+            case iniS = "INI S"
+            case coorIniN = "COOR INI N"
+            case coorIniS = "COOR INI S"
+            case itmN = "ITM N"
+            case itmS = "ITM S"
+            case itmBA = "ITM BA"
+            case depN = "DEP N"
+            case depS = "DEP S"
+            case coorDepN = "COOR DEP N"
+            case coorDepS = "COOR DEP S"
+            case locN = "LOC N"
+            case locS = "LOC S"
+            case coorLocN = "COOR LOC N"
+            case coorLocS = "COOR LOC S"
+            case solNW = "SOL NW"
+            case solNE = "SOL NE"
+            case solSW = "SOL SW"
+            case solSE = "SOL SE"
+            case pvl = "PVL"
+        }
+        
+        public enum Controller: String, Codable {
+            case instructor = "INS"
+            case trainee = "ST"
+            case certified = "PC"
+        }
+        
+        public struct ControlPositionAssignment: Codable, Equatable {
+            public let positions: Set<ControlPosition>
+            public let controller: Controller
         }
         
         public var name: String
@@ -21,13 +47,13 @@ public struct Log: Codable {
         public var duration: Int
         public var pressure: Int
         public var weather: String
-        public var controlPositionGroups: [Set<ControlPosition>]?
+        public var assignments: [ControlPositionAssignment]?
         
         enum CodingKeys: String, CodingKey {
-                case name, updateDate = "update_date", configuration, trafficDensity = "traffic_density", objectives, description, startDate = "start_date", duration, pressure, weather, controlPositionGroups
+                case name, updateDate = "update_date", configuration, trafficDensity = "traffic_density", objectives, description, startDate = "start_date", duration, pressure, weather, assignments
         }
         
-        public init(name: String, updateDate: Date, configuration: String, trafficDensity: String, objectives: String, description: String, startDate: Date, duration: Int, pressure: Int, weather: String, controlPositionGroups:[Set<ControlPosition>]?) {
+        public init(name: String, updateDate: Date, configuration: String, trafficDensity: String, objectives: String, description: String, startDate: Date, duration: Int, pressure: Int, weather: String, assignments:[ControlPositionAssignment]?) {
             self.name = name
             self.updateDate = updateDate
             self.configuration = configuration
@@ -38,7 +64,7 @@ public struct Log: Codable {
             self.duration = duration
             self.pressure = pressure
             self.weather = weather
-            self.controlPositionGroups = controlPositionGroups
+            self.assignments = assignments
         }
     }
     
