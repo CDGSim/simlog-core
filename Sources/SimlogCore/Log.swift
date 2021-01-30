@@ -3,6 +3,14 @@ import Foundation
 public struct Log: Codable {
     
     public struct Properties: Codable {
+        public enum ControlPosition: String, Codable {
+            case inin, inis, itmn, itms, itmba, coorinin, coorinis
+            case depn, deps, coordepn, coordeps
+            case locn, locs, coorlocn, coorlocs
+            case solse, solsw, solne, solnw
+            case prevol
+        }
+        
         public var name: String
         public var updateDate: Date
         public var configuration: String
@@ -13,12 +21,13 @@ public struct Log: Codable {
         public var duration: Int
         public var pressure: Int
         public var weather: String
+        public var controlPositionGroups: [Set<ControlPosition>]?
         
         enum CodingKeys: String, CodingKey {
-                case name, updateDate = "update_date", configuration, trafficDensity = "traffic_density", objectives, description, startDate = "start_date", duration, pressure, weather
+                case name, updateDate = "update_date", configuration, trafficDensity = "traffic_density", objectives, description, startDate = "start_date", duration, pressure, weather, controlPositionGroups
         }
         
-        public init(name: String, updateDate: Date, configuration: String, trafficDensity: String, objectives: String, description: String, startDate: Date, duration: Int, pressure: Int, weather: String) {
+        public init(name: String, updateDate: Date, configuration: String, trafficDensity: String, objectives: String, description: String, startDate: Date, duration: Int, pressure: Int, weather: String, controlPositionGroups:[Set<ControlPosition>]?) {
             self.name = name
             self.updateDate = updateDate
             self.configuration = configuration
@@ -29,6 +38,7 @@ public struct Log: Codable {
             self.duration = duration
             self.pressure = pressure
             self.weather = weather
+            self.controlPositionGroups = controlPositionGroups
         }
     }
     
