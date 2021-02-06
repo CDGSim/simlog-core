@@ -99,6 +99,11 @@ public struct Log: Codable {
         public struct SetupElement: Codable {
             public var callsign: String
             public var description: String
+            
+            public init(callsign: String, description: String) {
+                self.callsign = callsign
+                self.description = description
+            }
         }
         
         public var role: String
