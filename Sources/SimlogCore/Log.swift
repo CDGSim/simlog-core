@@ -36,6 +36,11 @@ public struct Log: Codable {
         public struct ControlPositionAssignment: Codable, Equatable {
             public let positions: Set<ControlPosition>
             public let controller: Controller
+            
+            public init(positions: Set<ControlPosition>, controller: Controller) {
+                self.positions = positions
+                self.controller = controller
+            }
         }
         
         public var name: String
