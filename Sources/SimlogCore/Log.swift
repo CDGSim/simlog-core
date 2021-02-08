@@ -80,11 +80,13 @@ public struct Log: Codable {
     public struct Event: Codable {
         public var time: String
         public var callsign: String
+        public var location: String?
         public var description: String
         
-        public init(time: String, callsign: String, description: String) {
+        public init(time: String, callsign: String, location:String? = nil, description: String) {
             self.time = time
             self.callsign = callsign
+            self.location = location
             self.description = description
         }
     }
