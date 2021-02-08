@@ -25,6 +25,9 @@ public struct Log: Codable {
             case solSW = "SOL SW"
             case solSE = "SOL SE"
             case pvl = "PVL"
+            case ca = "CA"
+            case ct = "CT"
+            case cvs = "CVS"
         }
         
         public enum Controller: String, Codable {
