@@ -1,3 +1,3 @@
 # simlog-core
 
-Data model for logs
+Data model for logs and simulations
