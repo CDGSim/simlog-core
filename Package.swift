@@ -13,9 +13,10 @@ let package = Package(
     targets: [
         .target(
             name: "SimlogCore",
-            dependencies: []),
+            resources: [.process("Resources")]),
         .testTarget(
             name: "SimlogCoreTests",
-            dependencies: ["SimlogCore"]),
+            dependencies: ["SimlogCore"],
+            resources: [.process("Resources")]),
     ]
 )

@@ -49,4 +49,8 @@ final class SimlogCoretests: XCTestCase {
         XCTAssert(properties.startDate == dateFormatter.date(from: "2021-01-30T12:06:10Z"))
         XCTAssert(properties.updateDate == dateFormatter.date(from: "2021-01-30T12:08:10Z"))
     }
+    
+    func testSharedContext() throws {
+        XCTAssertNotNil(SimulationContext.shared)
+    }
 }

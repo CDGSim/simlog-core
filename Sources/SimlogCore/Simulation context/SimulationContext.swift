@@ -19,7 +19,7 @@ struct SimulationContext: Codable {
     static let shared: SimulationContext? = loadFromBundle()
     
     static func loadFromBundle() -> SimulationContext? {
-        let bundle = Bundle.main
+        let bundle = Bundle.module
         if let contextUrl = bundle.url(forResource: "context", withExtension: "simulationcontext") {
             if let data = try? Data(contentsOf: contextUrl) {
                 let decoder = JSONDecoder()

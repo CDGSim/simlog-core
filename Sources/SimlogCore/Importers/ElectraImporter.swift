@@ -14,7 +14,7 @@ public struct ElectraImporter {
     
     private (set) var content: String
     
-    private let simulationContext = SimulationContext.loadFromBundle()
+    private let simulationContext = SimulationContext.shared
     
     // Scans a line from the file and returns a key and its value
     private func keyAndValue(from line:String) -> (String, String) {
