@@ -16,6 +16,8 @@ struct SimulationContext: Codable {
         case name, airfields, fixes
     }
     
+    static let shared: SimulationContext? = loadFromBundle()
+    
     static func loadFromBundle() -> SimulationContext? {
         let bundle = Bundle.main
         if let contextUrl = bundle.url(forResource: "context", withExtension: "simulationcontext") {
