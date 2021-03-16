@@ -9,8 +9,8 @@ import Foundation
 
 public struct Simulation : Codable, Equatable {
     var name: String?
-    var date: Date?
-    var duration: Int? // In minutes
+    public var date: Date?
+    public var duration: Int? // In minutes
     
     var airfieldConfigurationPlans: [AirfieldConfigurationPlan]?
     
