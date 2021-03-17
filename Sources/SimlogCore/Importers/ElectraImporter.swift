@@ -7,6 +7,23 @@
 
 import Foundation
 
+enum Key: String {
+    case exercice = "EXERCICE"
+    case dates = "DATES"
+    case pln = "PLN"
+    case niveaux = "NIVEAUX"
+    case départ_terrain = "DEPART_TERRAIN"
+    case arrivée_terrain = "ARRIVEE_TERRAIN"
+    case départ_balise = "DEPART_BALISE"
+    case balises = "BALISES"
+    case fl_balises = "FL_BALISES"
+    case vi_balises = "VI_BALISES"
+    case calage_balise = "CALAGE_BALISE"
+    case météo_globale = "METEO_GLOBALE"
+    case config_piste = "CONFIG_PISTE"
+    case none
+}
+
 public struct ElectraImporter {
     public init(content: String) {
         self.content = content
@@ -17,17 +34,17 @@ public struct ElectraImporter {
     private let simulationContext = SimulationContext.shared
     
     // Scans a line from the file and returns a key and its value
-    private func keyAndValue(from line:String) -> (String, String) {
+    private func keyAndValue(from line:String) -> (Key, String) {
         var keyScanned = false
-        var key: String = ""
+        var keyString: String = ""
         var value: String = ""
         for character in line {
             if !keyScanned {
                 if character != ">" && character != "<" {
-                    key.append(character)
+                    keyString.append(character)
                 }
                 else if character == ">" {
-                    key = key.trimmingCharacters(in: .whitespaces)
+                    keyString = keyString.trimmingCharacters(in: .whitespaces)
                     keyScanned = true
                 }
             }
@@ -35,6 +52,7 @@ public struct ElectraImporter {
                 value.append(character)
             }
         }
+        let key = Key(rawValue: keyString) ?? .none
         return (key, value)
     }
 }
@@ -49,7 +67,7 @@ extension ElectraImporter: ImporterProtocol {
             
             let values = value.trimmingCharacters(in: .whitespaces).split(separator: ";")
             
-            if key == "EXERCICE" {
+            if key == .exercice {
                 if let nameSubstring = values.first {
                     return String(nameSubstring)
                 }
@@ -59,46 +77,56 @@ extension ElectraImporter: ImporterProtocol {
     }
     
     public func date() -> Date {
-        var date = Date()
-        
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
         
-        self.scanContentAndForEachLine { (key, values) in
-            if key == "DATES" {
+        let lines = content.components(separatedBy: .newlines)
+        for line in lines {
+            let keyAndValue = self.keyAndValue(from:line)
+            let key = keyAndValue.0
+            let value = keyAndValue.1
+            
+            let values = value.trimmingCharacters(in: .whitespaces).split(separator: ";")
+            
+            if key == .dates {
                 if let dateSubtring = values.last, let timeSubstring = values.first {
                     let simulationDateString = String(dateSubtring)+" "+String(timeSubstring)
                     if let parsedDate = dateFormatter.date(from: simulationDateString) {
-                        date = parsedDate
+                        return parsedDate
                     }
                 }
             }
         }
         
-        return date
+        return Date()
     }
     
     public mutating func duration() -> Int {
-        var duration = 120 // Default value
-        
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         dateFormatter.dateFormat = "HH:mm"
         
-        self.scanContentAndForEachLine { (key, values) in
-            if key == "DATES" {
+        let lines = content.components(separatedBy: .newlines)
+        for line in lines {
+            let keyAndValue = self.keyAndValue(from:line)
+            let key = keyAndValue.0
+            let value = keyAndValue.1
+            
+            let values = value.trimmingCharacters(in: .whitespaces).split(separator: ";")
+            
+            if key == .dates {
                 if values.count > 2 {
                     let startTime = values[0]
                     let endTime = values[1]
-                    if let startDate = dateFormatter.date(from: startTime), let endDate = dateFormatter.date(from: endTime) {
-                        duration = Int(endDate.timeIntervalSince(startDate))/60
+                    if let startDate = dateFormatter.date(from: String(startTime)), let endDate = dateFormatter.date(from: String(endTime)) {
+                        return Int(endDate.timeIntervalSince(startDate))/60
                     }
                 }
             }
         }
         
-        return duration
+        return 120 // Default value
     }
     
     public var flights: [Flight] {
@@ -272,13 +300,12 @@ extension ElectraImporter: ImporterProtocol {
             
             let values = value.trimmingCharacters(in: .whitespaces).split(separator: ";")
             
-            if key == "DATES" {
+            switch key {
+            case .dates:
                 if let dateSubtring = values.last {
                     simulationDateString = String(dateSubtring)
                 }
-            }
-            
-            if key == "PLN" {
+            case .pln:
                 appendCurrentFlight()
                 
                 // Start a new flight
@@ -302,18 +329,14 @@ extension ElectraImporter: ImporterProtocol {
                         currentFlight?["time"] = string
                     }
                 }
-            }
-            
-            if key == "NIVEAUX" {
+            case .niveaux:
                 for (index, substring) in values.enumerated() {
                     let string = String(substring)
                     if index == 1 {
                         currentFlight?["initialAltitude"] = string
                     }
                 }
-            }
-            
-            if key == "DEPART_TERRAIN" {
+            case .départ_terrain:
                 for (index, substring) in values.enumerated() {
                     let string = String(substring)
                     if index == 1 {
@@ -323,9 +346,7 @@ extension ElectraImporter: ImporterProtocol {
                         currentFlight?["departureRunwayLetter"] = string
                     }
                 }
-            }
-            
-            if key == "ARRIVEE_TERRAIN" {
+            case .arrivée_terrain:
                 for (index, substring) in values.enumerated() {
                     let string = String(substring)
                     if index == 1 {
@@ -335,26 +356,18 @@ extension ElectraImporter: ImporterProtocol {
                         currentFlight?["destinationRunwayLetter"] = string
                     }
                 }
-            }
-            
-            if key == "DEPART_BALISE" {
+            case .départ_balise:
                 currentFlight?["firstFix"] = value.trimmingCharacters(in: .whitespaces)
-            }
-            
-            if key == "BALISES" {
+            case .balises:
                 currentFlight?["fixes"] = value.trimmingCharacters(in: .whitespaces)
-            }
-            
-            if key == "FL_BALISES" {
+            case .fl_balises:
                 currentFlight?["altitudes"] = value.trimmingCharacters(in: .whitespaces)
-            }
-            
-            if key == "VI_BALISES" {
+            case .vi_balises:
                 currentFlight?["speeds"] = value.trimmingCharacters(in: .whitespaces)
-            }
-            
-            if key == "CALAGE_BALISE" {
+            case .calage_balise:
                 currentFlight?["setupFix"] = value.trimmingCharacters(in: .whitespaces)
+            default:
+                break
             }
         }
         
@@ -371,7 +384,7 @@ extension ElectraImporter: ImporterProtocol {
             
             let values = value.trimmingCharacters(in: .whitespaces).split(separator: ";")
             
-            if key == "METEO_GLOBALE" {
+            if key == .météo_globale {
                 if let pressure = Int(values[1]) {
                     return pressure
                 }
@@ -389,7 +402,7 @@ extension ElectraImporter: ImporterProtocol {
             
             let values = value.trimmingCharacters(in: .whitespaces).split(separator: ";")
             
-            if key == "METEO_GLOBALE" {
+            if key == .météo_globale {
                 if let pressure = Int(values[0]) {
                     return pressure
                 }
@@ -398,7 +411,7 @@ extension ElectraImporter: ImporterProtocol {
         return 999
     }
     
-    private func scanContentAndForEachLine(_ handler: (String, [String]) -> Void) {
+    private func scanContentAndForEachLine(_ handler: (Key, [String]) -> Void) {
         let lines = content.components(separatedBy: .newlines)
         
         for line in lines {
@@ -423,7 +436,7 @@ extension ElectraImporter: ImporterProtocol {
         var configurations = [String:String]()
         
         self.scanContentAndForEachLine { (key, values) in
-            if key == "CONFIG_PISTE" {
+            if key == .config_piste {
                 if values.count >= 2 {
                     let airfieldName = values[0]
                     let configurationLetter = values[1]
