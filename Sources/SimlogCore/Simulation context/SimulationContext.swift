@@ -121,7 +121,7 @@ extension SimulationContext {
         timesLFPB["BANOX"] = ["07":710, "27":1310]
         
         var timesLFOB:[String:[String:Int]] = [:]
-        timesLFOB["IPNOB"] = ["30":980,"12":1320]
+        timesLFOB["IPNOB"] = ["30":840,"12":1320]
         timesLFOB["LORNI"] = ["30":960,"12":1190]
         
         var timesLFPO:[String:[String:Int]] = [:]
