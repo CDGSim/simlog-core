@@ -271,6 +271,16 @@ extension ElectraImporter: ImporterProtocol {
                         flight.route.append(step)
                     }
                 }
+                
+                // Fix Orly runway changes
+                if flight.destination == "LFPO" {
+                    if flight.destinationRunway == "26" {
+                        flight.destinationRunway = "25"
+                    } else if flight.destinationRunway == "06" {
+                        flight.destinationRunway = "07"
+                    }
+                }
+                
                 flights.append(flight)
             }
         }
