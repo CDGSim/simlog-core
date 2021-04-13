@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Simulation : Codable, Equatable {
-    var name: String?
+    public var name: String?
     public var date: Date?
     public var duration: Int? // In minutes
     
