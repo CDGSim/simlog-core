@@ -80,12 +80,14 @@ public struct Log: Codable {
         public var callsign: String
         public var location: String?
         public var description: String
+        public var command: String?
         
-        public init(time: String, callsign: String, location:String? = nil, description: String) {
+        public init(time: String, callsign: String, location:String? = nil, description: String, command:String? = nil) {
             self.time = time
             self.callsign = callsign
             self.location = location
             self.description = description
+            self.command = command
         }
     }
     
