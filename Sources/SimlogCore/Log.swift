@@ -56,12 +56,14 @@ public struct Log: Codable {
         public var duration: Int
         public var weather: String
         public var assignments: [ControlPositionAssignment]?
+        public var minimumNumberOfPilots: Int?
+        public var minimumNumberOfAttendees: Int?
         
         enum CodingKeys: String, CodingKey {
-                case name, updateDate = "update_date", configuration, trafficDensity = "traffic_density", objectives, description, startDate = "start_date", duration, weather, assignments
+                case name, updateDate = "update_date", configuration, trafficDensity = "traffic_density", objectives, description, startDate = "start_date", duration, weather, assignments, minimumNumberOfPilots, minimumNumberOfAttendees
         }
         
-        public init(name: String, updateDate: Date, configuration: String, trafficDensity: Int, objectives: String, description: String, startDate: Date, duration: Int, weather: String, assignments:[ControlPositionAssignment]?) {
+        public init(name: String, updateDate: Date, configuration: String, trafficDensity: Int, objectives: String, description: String, startDate: Date, duration: Int, weather: String, assignments:[ControlPositionAssignment]?, minimumNumberOfPilots:Int?, minimumNumberOfAttendees: Int?) {
             self.name = name
             self.updateDate = updateDate
             self.configuration = configuration
@@ -72,6 +74,8 @@ public struct Log: Codable {
             self.duration = duration
             self.weather = weather
             self.assignments = assignments
+            self.minimumNumberOfPilots = minimumNumberOfPilots
+            self.minimumNumberOfAttendees = minimumNumberOfAttendees
         }
     }
     
