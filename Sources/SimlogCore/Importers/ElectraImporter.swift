@@ -32,6 +32,7 @@ public struct ElectraImporter {
     private (set) var content: String
     
     private let simulationContext = SimulationContext.shared
+    private let estimateCalculator = EstimateCalculator()
     
     // Scans a line from the file and returns a key and its value
     private func keyAndValue(from line:String) -> (Key, String) {
@@ -205,7 +206,8 @@ extension ElectraImporter: ImporterProtocol {
                                     }
                                 }
                             }
-                            date = date.addingTimeInterval(-(simulationContext?.timeIntervalToFly(route: route) ?? 0))
+                            let timeToFlyRoute = try? estimateCalculator.timeIntervalToFly(route: route)
+                            date = date.addingTimeInterval(-(timeToFlyRoute ?? 0))
                         }
                         flight.initialCondition = .init(date: date, position: firstFix, altitude:initialAltitude)
                     }

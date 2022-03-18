@@ -10,7 +10,7 @@ import Foundation
 public struct Flight: Identifiable, Codable, Hashable, Equatable {
     public var id = UUID()
     public var callsign:String
-    public var aircraftType: String
+    public var aircraftType: AircraftType
     public var origin:String = ""
     public var departureRunway:String?
     public var destination:String = ""

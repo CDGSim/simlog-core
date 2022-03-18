@@ -22,7 +22,7 @@ extension ImporterProtocol {
         return Simulation(name: self.name, date:date(), duration:duration(), flights: self.flights, pressure: self.pressure, temperature: self.temperature)
     }
     
-    mutating func date() -> Date {
+    mutating public func date() -> Date {
         return self.flights.randomElement()?.initialCondition.date ?? Date()
     }
 }
