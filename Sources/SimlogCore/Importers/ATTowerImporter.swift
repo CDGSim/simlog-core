@@ -40,11 +40,33 @@ public struct ATTowerImporter {
                                                     altitude: .flightLevel(260))
             }
             
-            let route = flightPlan.actionLines.actionLines.compactMap { actionLine -> [Leg]? in
+            let route = flightPlan.actionLines.actionLines.sorted(by: { firstActionLine, secondActionLine in
+                func order(for actionLine:ActionLine) -> Int {
+                    let order: Int
+                    switch actionLine.command {
+                    case "SID":
+                        order = 1
+                    case "FBX", "FIX":
+                        order = 2
+                    case "APP":
+                        order = 3
+                    default:
+                        order = 0
+                    }
+                    return order
+                }
+                let firstActionOrder = order(for: firstActionLine)
+                let secondActionOrder = order(for: secondActionLine)
+                return firstActionOrder < secondActionOrder
+            }).compactMap { actionLine -> [Leg]? in
                 switch actionLine.command {
                 case "FBX", "FIX":
                     if let fixName = actionLine.name {
                         return [Leg(fix: fixName)]
+                    } else { return nil }
+                case "SID":
+                    if let fixName = actionLine.name?.prefix(5), fixName.count == 5{
+                        return [Leg(fix: String(fixName))]
                     } else { return nil }
                 case "APP":
                     if let atTowerProcedureName = actionLine.name {
