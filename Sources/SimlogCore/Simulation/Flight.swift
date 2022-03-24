@@ -15,6 +15,7 @@ public struct Flight: Identifiable, Codable, Hashable, Equatable {
     public var departureRunway:String?
     public var destination:String = ""
     public var destinationRunway:String?
+    public var parkingStand: String = ""
     @DecodableFlightRule public  var flightRule: FlightRule
     public var ssrCode: String?
     public var route:[Leg] = []

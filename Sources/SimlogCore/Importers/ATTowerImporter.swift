@@ -97,6 +97,7 @@ public struct ATTowerImporter {
                                 departureRunway: flightPlan.misc.assignedRunway,
                                 destination: flightPlan.arrivalAirport.code,
                                 destinationRunway: flightPlan.misc.assignedRunway,
+                                parkingStand: flightPlan.misc.assignedGate ?? "",
                                 flightRule: flightRule,
                                 ssrCode: flightPlan.transponder.SSRCode,
                                 route: route,
@@ -252,9 +253,11 @@ struct ICAO: Codable {
 }
 
 struct Misc: Codable {
+    let assignedGate: String?
     let assignedRunway: String?
     
     enum CodingKeys: String, CodingKey {
+        case assignedGate = "AssignedGate"
         case assignedRunway = "AssignedRunway"
     }
 }
