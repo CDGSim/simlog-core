@@ -15,7 +15,7 @@ public struct ATTowerImporter {
             // Initial conditions
             let initialCondition: InitialCondition
             switch flightPlan.setup.command {
-            case "DPO", "XDP":
+            case "DPO", "XDP", "TXO":
                 let date: Date
                 if let etd = flightPlan.departureAirport.plannedEtd {
                     date = startDate.addingTimeInterval(TimeInterval(etd))
