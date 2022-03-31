@@ -65,8 +65,9 @@ public struct ATTowerImporter {
                         return [Leg(fix: fixName)]
                     } else { return nil }
                 case "SID":
-                    if let fixName = actionLine.name?.prefix(5), fixName.count == 5{
-                        return [Leg(fix: String(fixName))]
+                    if let sidName = actionLine.name?.prefix(5),
+                       let sidFix = sidName.components(separatedBy: .whitespaces).first {
+                        return [Leg(fix: String(sidFix))]
                     } else { return nil }
                 case "APP":
                     if let atTowerProcedureName = actionLine.name {
