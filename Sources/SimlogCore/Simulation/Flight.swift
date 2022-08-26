@@ -21,6 +21,8 @@ public struct Flight: Identifiable, Codable, Hashable, Equatable {
     public var route:[Leg] = []
     public var initialCondition: InitialCondition = .init(date: Date(), position: "", altitude: .flightLevel(260))
     
+    public var estimateAtRunway: Date?
+    
     // Do not encode id, as it is used only by the application to uniquely identify flights
     private enum CodingKeys : String, CodingKey {
         case callsign, aircraftType, origin, destination, route, departureRunway, destinationRunway, flightRule, ssrCode = "ssr_code", initialCondition

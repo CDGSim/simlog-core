@@ -9,6 +9,9 @@ import Foundation
 
 public extension Flight {
     func estimatedMovementTime() -> Date? {
+        if let estimateAtRunway = self.estimateAtRunway {
+            return estimateAtRunway
+        }
         return EstimateCalculator().estimatedDateToRunway(for: self)
     }
     

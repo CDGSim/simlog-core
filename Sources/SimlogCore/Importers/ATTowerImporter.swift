@@ -82,6 +82,12 @@ public struct ATTowerImporter {
                                     return correspondingSTAR.route
                                 }
                             }
+                            
+                            let cleanedUpProcedureName = procedureName.replacingOccurrences(of: "/!\\ ", with: "")
+                            if cleanedUpProcedureName.count == 7, cleanedUpProcedureName.prefix(5).trimmingCharacters(in: .uppercaseLetters).isEmpty && cleanedUpProcedureName.prefix(5).count == 5 {
+                                let approachFix = String(cleanedUpProcedureName.prefix(5))
+                                return [.init(fix: approachFix)]
+                            }
                         }
                     }
                     return nil
@@ -90,6 +96,14 @@ public struct ATTowerImporter {
                 }
             }.reduce([Leg]()) { partialRoute, legs in
                 partialRoute + legs
+            }
+            
+            // Estimate at runway
+            let estimateAtRunway: Date?
+            if let plannedETA = flightPlan.arrivalAirport.plannedEta {
+                estimateAtRunway = startDate.addingTimeInterval(Double(plannedETA))
+            } else {
+                estimateAtRunway = nil
             }
             
             let flight = Flight(callsign: flightPlan.basicData.callsign,
@@ -102,7 +116,8 @@ public struct ATTowerImporter {
                                 flightRule: flightRule,
                                 ssrCode: flightPlan.transponder.SSRCode,
                                 route: route,
-                                initialCondition: initialCondition)
+                                initialCondition: initialCondition,
+                                estimateAtRunway: estimateAtRunway)
             return flight
         }
         self.flights = flights
