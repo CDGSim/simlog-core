@@ -23,6 +23,6 @@ extension ImporterProtocol {
     }
     
     mutating public func date() -> Date {
-        return self.flights.randomElement()?.initialCondition.date ?? Date()
+        fatalError("Function date() not implemented!")
     }
 }

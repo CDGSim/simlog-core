@@ -109,6 +109,9 @@ public struct ATTowerImporter {
         
         self.exerciseName = exerciseData.exercise.header.basicData.name
         self.exerciseDuration = exerciseData.exercise.header.basicData.duration/60
+        
+        let startDateTimestamp = Double(exerciseData.exercise.header.basicData.start)
+        self.startDate = Date(timeIntervalSince1970: startDateTimestamp)
     }
     
     private let simulationContext = SimulationContext.shared
@@ -116,6 +119,7 @@ public struct ATTowerImporter {
     
     private let exerciseName: String
     private let exerciseDuration: Int
+    private let startDate: Date
     
     public var flights: [Flight]
 }
@@ -135,6 +139,10 @@ extension ATTowerImporter: ImporterProtocol {
     
     public var temperature: Int {
         return 15
+    }
+    
+    public func date() -> Date {
+        startDate
     }
     
 }
