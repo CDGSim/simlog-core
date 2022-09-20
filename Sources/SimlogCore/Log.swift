@@ -22,6 +22,8 @@ public struct Log: Codable {
             case coorLocS = "COOR LOC S"
             case solNW = "SOL NW"
             case solNE = "SOL NE"
+            case solNTWY = "SOL N TWY"
+            case solNPKG = "SOL N PKG"
             case solSW = "SOL SW"
             case solSE = "SOL SE"
             case vtBD = "VT BD"
